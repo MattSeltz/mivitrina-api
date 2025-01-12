@@ -18,32 +18,59 @@ const siteSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		dates: [
-			{
-				d: {
-					type: String,
-					required: true,
-				},
-				h: {
-					type: Array,
-					required: true,
-				},
+		dates: {
+			lunes: {
+				checked: Boolean,
+				open: String,
+				close: String,
 			},
-		],
-		email: {
-			type: String,
+			martes: {
+				checked: Boolean,
+				open: String,
+				close: String,
+			},
+			miercoles: {
+				checked: Boolean,
+				open: String,
+				close: String,
+			},
+			jueves: {
+				checked: Boolean,
+				open: String,
+				close: String,
+			},
+			viernes: {
+				checked: Boolean,
+				open: String,
+				close: String,
+			},
+			sabado: {
+				checked: Boolean,
+				open: String,
+				close: String,
+			},
+			domingo: {
+				checked: Boolean,
+				open: String,
+				close: String,
+			},
 		},
-		tel: {
-			type: String,
-		},
-		whatsapp: {
-			type: String,
-		},
-		instagram: {
-			type: String,
-		},
-		facebook: {
-			type: String,
+		contact: {
+			email: {
+				type: String,
+			},
+			tel: {
+				type: String,
+			},
+			whatsapp: {
+				type: String,
+			},
+			instagram: {
+				type: String,
+			},
+			facebook: {
+				type: String,
+			},
 		},
 		user: { type: Schema.Types.ObjectId, ref: "User" },
 	},
