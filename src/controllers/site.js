@@ -52,3 +52,16 @@ export const deleteData = async (req, res) => {
 		throw new Error(error);
 	}
 };
+
+export const populateData = async (req, res) => {
+	const { id } = req.params;
+	const { user } = req.body;
+
+	try {
+		await Site.findByIdAndUpdate(id, { user });
+		res.status(200).json({ message: "Data has been updated" });
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+		throw new Error(error);
+	}
+};

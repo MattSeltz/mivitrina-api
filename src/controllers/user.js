@@ -20,17 +20,6 @@ export const getOneData = async (req, res) => {
 	}
 };
 
-export const postData = async (req, res) => {
-	try {
-		const user = new User(req.body);
-		await user.save();
-		res.status(201).json(user);
-	} catch (error) {
-		res.status(500).json({ message: error.message });
-		throw new Error(error);
-	}
-};
-
 export const putData = async (req, res) => {
 	try {
 		const user = await User.findByIdAndUpdate(req.params, req.body, {
@@ -47,6 +36,19 @@ export const deleteData = async (req, res) => {
 	try {
 		await User.findByIdAndDelete(req.params.id);
 		res.status(200).json({ message: "Data has been deleted" });
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+		throw new Error(error);
+	}
+};
+
+export const populateData = async (req, res) => {
+	const { id } = req.params;
+	const { site } = req.body;
+
+	try {
+		await User.findByIdAndUpdate(id, { $push: { sites: site } });
+		res.status(200).json({ message: "Data has been updated" });
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 		throw new Error(error);
