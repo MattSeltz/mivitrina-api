@@ -22,7 +22,7 @@ export const getOneData = async (req, res) => {
 
 export const putData = async (req, res) => {
 	try {
-		const user = await User.findByIdAndUpdate(req.params, req.body, {
+		const user = await User.findByIdAndUpdate(req.params.id, req.body, {
 			new: true,
 		});
 		res.status(200).json(user);

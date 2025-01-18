@@ -33,7 +33,7 @@ export const postData = async (req, res) => {
 
 export const putData = async (req, res) => {
 	try {
-		const site = await Site.findByIdAndUpdate(req.params, req.body, {
+		const site = await Site.findByIdAndUpdate(req.params.id, req.body, {
 			new: true,
 		});
 		res.status(200).json(site);
