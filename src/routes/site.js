@@ -7,6 +7,7 @@ import {
 	putData,
 	deleteData,
 	populateData,
+	upload,
 } from "../controllers/site.js";
 
 const router = Router();
@@ -17,5 +18,7 @@ router.post("/", postData);
 router.put("/:id", putData);
 router.delete("/:id", deleteData);
 router.put("/populate/:id", populateData);
+
+router.post("/:id/upload", upload);
 
 export default router;

@@ -1,5 +1,7 @@
 import { Site } from "../models/site.js";
 
+import cloudinary from "../configs/cloudiary.js";
+
 export const getData = async (req, res) => {
 	try {
 		const site = await Site.find().populate("user");
@@ -63,5 +65,28 @@ export const populateData = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 		throw new Error(error);
+	}
+};
+
+export const upload = async (req, res) => {
+	const file = req.body.image;
+	const { id } = req.params;
+
+	try {
+		const result = await cloudinary.uploader.upload(file, {
+			folder: "mivitrina",
+		});
+
+		const { galery } = await Site.findById(id);
+
+		const site = await Site.findByIdAndUpdate(
+			id,
+			{ galery: [...galery, { uri: result.secure_url, id: result.public_id }] },
+			{ new: true }
+		);
+		res.json(site);
+	} catch (error) {
+		console.error(error.message);
+		res.status(500).send(error.message);
 	}
 };

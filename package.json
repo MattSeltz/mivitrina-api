@@ -20,6 +20,7 @@
 	"description": "Api de la aplicación MIVITRINA",
 	"dependencies": {
 		"bcrypt": "^5.1.1",
+		"cloudinary": "^2.5.1",
 		"cookie-parser": "^1.4.7",
 		"cors": "^2.8.5",
 		"express": "^4.21.2",

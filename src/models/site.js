@@ -12,7 +12,6 @@ const siteSchema = new Schema(
 		},
 		galery: {
 			type: Array,
-			required: true,
 		},
 		ubication: {
 			type: String,
