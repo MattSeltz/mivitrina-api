@@ -57,18 +57,23 @@ const siteSchema = new Schema(
 		contact: {
 			email: {
 				type: String,
+				required: true,
 			},
-			tel: {
+			telefono: {
 				type: String,
+				required: true,
 			},
 			whatsapp: {
 				type: String,
+				required: true,
 			},
 			instagram: {
 				type: String,
+				required: true,
 			},
 			facebook: {
 				type: String,
+				required: true,
 			},
 		},
 		user: { type: Schema.Types.ObjectId, ref: "User" },
