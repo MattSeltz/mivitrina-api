@@ -53,7 +53,27 @@ const login = async (req, res) => {
 	}
 };
 
+const recovery = async (req, res) => {
+	const { password } = req.body;
+	const { id } = req.params;
+
+	try {
+		const user = await User.findById(id);
+
+		if (!user) {
+			return res.status(400).json({ error: "Invalid username" });
+		}
+
+		const hashedPassword = await hash(password, 10);
+		await User.findByIdAndUpdate(id, { password: hashedPassword });
+		res.status(201).json({ message: "Password registered successfully" });
+	} catch (error) {
+		res.status(500).json({ error: "Error registering password" });
+	}
+};
+
 router.post("/register", register);
 router.post("/login", login);
+router.put("/recovery/:id", recovery);
 
 export default router;
