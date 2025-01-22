@@ -1,5 +1,8 @@
 import { Router } from "express";
 
+//MIDDLEWARES
+import { authenticate } from "../middlewares/auth.js";
+
 import {
 	getData,
 	getOneData,
@@ -12,13 +15,13 @@ import {
 
 const router = Router();
 
-router.get("/", getData);
+router.get("/", authenticate, getData);
 router.get("/:id", getOneData);
-router.post("/", postData);
-router.put("/:id", putData);
-router.delete("/:id", deleteData);
-router.put("/populate/:id", populateData);
+router.post("/", authenticate, postData);
+router.put("/:id", authenticate, putData);
+router.delete("/:id", authenticate, deleteData);
+router.put("/populate/:id", authenticate, populateData);
 
-router.post("/:id/upload", upload);
+router.post("/:id/upload", authenticate, upload);
 
 export default router;

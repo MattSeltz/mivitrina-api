@@ -72,8 +72,16 @@ const recovery = async (req, res) => {
 	}
 };
 
+const removeCookie = (req, res) => {
+	const { id } = req.params;
+
+	res.clearCookie("token");
+	res.json({ message: "Cookie deleted" });
+};
+
 router.post("/register", register);
 router.post("/login", login);
 router.put("/recovery/:id", recovery);
+router.delete("/cookie/:id", removeCookie);
 
 export default router;

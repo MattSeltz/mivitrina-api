@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/user", authenticate, userRoutes);
-app.use("/site", authenticate, siteRoutes);
+app.use("/site", siteRoutes);
 app.use("/email", emailRoutes);
 
 app.listen(PORT, () => {
