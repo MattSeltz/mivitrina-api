@@ -68,6 +68,23 @@ export const populateData = async (req, res) => {
 	}
 };
 
+export const getOneDataByTitle = async (req, res) => {
+	const { slug } = req.params;
+
+	const formattedInput = slug.replace(/\s+/g, "").toLowerCase();
+	const regex = new RegExp(formattedInput.split("").join("\\s*"), "i");
+
+	try {
+		const site = await Site.findOne({ title: { $regex: regex } }).populate(
+			"user"
+		);
+		res.json(site);
+	} catch (error) {
+		console.error(error.message);
+		res.status(500).send(error.message);
+	}
+};
+
 export const upload = async (req, res) => {
 	const file = req.body.image;
 	const { id } = req.params;
