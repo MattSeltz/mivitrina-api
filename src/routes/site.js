@@ -12,6 +12,7 @@ import {
 	populateData,
 	upload,
 	getOneDataByTitle,
+	uploadAndUpdate,
 } from "../controllers/site.js";
 
 const router = Router();
@@ -25,5 +26,6 @@ router.put("/populate/:id", authenticate, populateData);
 router.get("/title/:slug", getOneDataByTitle);
 
 router.post("/:id/upload", authenticate, upload);
+router.post("/:id/uploadAndUpdate", authenticate, uploadAndUpdate);
 
 export default router;

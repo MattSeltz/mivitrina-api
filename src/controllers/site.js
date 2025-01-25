@@ -107,3 +107,54 @@ export const upload = async (req, res) => {
 		res.status(500).send(error.message);
 	}
 };
+
+export const uploadAndUpdate = async (req, res) => {
+	const file = req.body.image;
+	const { id } = req.params;
+	const { photoId } = req.body;
+
+	try {
+		const result = await cloudinary.uploader.upload(file, {
+			folder: "mivitrina",
+		});
+
+		// Mostrar la imagen que vamos a actualizar
+		console.log("Intentando actualizar photoId:", photoId);
+		const site = await Site.findOne({ _id: id, "galery.id": photoId });
+
+		if (!site) {
+			return res
+				.status(404)
+				.json({ message: "No se encontró el sitio o la foto." });
+		}
+
+		// Verificamos los valores antes de la actualización
+		console.log("Sitio encontrado para actualizar:", site.galery);
+
+		// Realizamos la actualización
+		const updatedSite = await Site.findOneAndUpdate(
+			{ _id: id, "galery.id": photoId },
+			{
+				$set: {
+					"galery.$.uri": result.secure_url, // Actualizamos la URL
+					"galery.$.id": result.public_id, // Actualizamos el ID
+				},
+			},
+			{ new: true }
+		);
+
+		// Verificamos si el sitio se actualizó
+		if (!updatedSite) {
+			return res.status(404).json({
+				message: "No se pudo actualizar la foto en el sitio.",
+			});
+		}
+
+		res.json({ message: "Imagen actualizada correctamente", updatedSite });
+	} catch (error) {
+		console.error("Error al actualizar la foto:", error.message);
+		res
+			.status(500)
+			.send({ message: "Error al actualizar la foto", error: error.message });
+	}
+};
