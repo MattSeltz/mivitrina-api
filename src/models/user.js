@@ -15,6 +15,10 @@ const userSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		tcp: {
+			type: Boolean,
+			required: true,
+		},
 		sites: [{ type: Schema.Types.ObjectId, ref: "Site" }],
 	},
 	{ timestamps: true }

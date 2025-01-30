@@ -10,11 +10,11 @@ import { SECRET_KEY } from "../configs/configs.js";
 const router = Router();
 
 const register = async (req, res) => {
-	const { name, email, password } = req.body;
+	const { name, email, password, tcp } = req.body;
 
 	try {
 		const hashedPassword = await hash(password, 10);
-		const newUser = new User({ name, email, password: hashedPassword });
+		const newUser = new User({ name, email, password: hashedPassword, tcp });
 		await newUser.save();
 		res.status(201).json({ message: "User registered successfully" });
 	} catch (error) {

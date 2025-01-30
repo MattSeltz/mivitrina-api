@@ -13,6 +13,7 @@ import userRoutes from "./routes/user.js";
 import siteRoutes from "./routes/site.js";
 import authRoutes from "./auth/auth.js";
 import emailRoutes from "./email/email.js";
+import messageRoutes from "./routes/message.js";
 
 //MIDDLEWARES
 import { authenticate } from "./middlewares/auth.js";
@@ -38,6 +39,7 @@ app.use("/auth", authRoutes);
 app.use("/user", authenticate, userRoutes);
 app.use("/site", siteRoutes);
 app.use("/email", emailRoutes);
+app.use("/message", messageRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
