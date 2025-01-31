@@ -47,8 +47,7 @@ const sendPasswordResetEmail = async (req, res) => {
 		console.log("Correo enviado con éxito a:", to);
 		res.json({ message: "OK!" });
 	} catch (error) {
-		console.error(error);
-		res.status(500).json(error);
+		res.status(500).json({ error: "Error al enviar el correo" });
 	}
 };
 
@@ -78,8 +77,7 @@ const getDataByEmail = async (req, res) => {
 			res.status(400).json({ error: "Usuario no encontrado" });
 		}
 	} catch (error) {
-		res.status(500).json({ message: error.message });
-		throw new Error(error);
+		res.status(500).json({ error: "Error al buscar el usuario" });
 	}
 };
 

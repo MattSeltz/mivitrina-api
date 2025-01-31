@@ -7,6 +7,6 @@ export const db = async () => {
 		await connect(MONGODB_KEY);
 		console.log("Connected to database");
 	} catch (error) {
-		throw new Error("Error while connecting to database");
+		console.error("Error while connecting to database", error);
 	}
 };

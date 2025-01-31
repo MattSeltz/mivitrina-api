@@ -13,12 +13,18 @@ const register = async (req, res) => {
 	const { name, email, password, tcp } = req.body;
 
 	try {
+		const userEmail = await User.findOne({ email });
+
+		if (userEmail) {
+			return res.status(400).json({ error: "El correo electrónico ya existe" });
+		}
+
 		const hashedPassword = await hash(password, 10);
 		const newUser = new User({ name, email, password: hashedPassword, tcp });
 		await newUser.save();
 		res.status(201).json({ message: "User registered successfully" });
 	} catch (error) {
-		res.status(500).json({ error: "Error registering user" });
+		res.status(500).json({ error: "Error al registrar usuario" });
 	}
 };
 
@@ -29,13 +35,13 @@ const login = async (req, res) => {
 		const user = await User.findOne({ email });
 
 		if (!user) {
-			return res.status(400).json({ error: "Invalid username or password" });
+			return res.status(400).json({ error: "Nombre de usuario incorrecto" });
 		}
 
 		const isMatch = await compare(password, user.password);
 
 		if (!isMatch) {
-			return res.status(400).json({ error: "Invalid username or password" });
+			return res.status(400).json({ error: "Contraseña incorrecta" });
 		}
 
 		const token = jwt.sign({ userId: user._id }, SECRET_KEY, {
@@ -47,9 +53,11 @@ const login = async (req, res) => {
 			sameSite: "none",
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		res.status(200).json({ message: "Logged in successfully", id: user._id });
+		res
+			.status(200)
+			.json({ message: "Iniciado sesión con éxito", id: user._id });
 	} catch (error) {
-		res.status(500).json({ error: "Error logging in" });
+		res.status(500).json({ error: "Error al iniciar sesión" });
 	}
 };
 
@@ -61,14 +69,14 @@ const recovery = async (req, res) => {
 		const user = await User.findById(id);
 
 		if (!user) {
-			return res.status(400).json({ error: "Invalid username" });
+			return res.status(400).json({ error: "Nombre de usuario no válido" });
 		}
 
 		const hashedPassword = await hash(password, 10);
 		await User.findByIdAndUpdate(id, { password: hashedPassword });
-		res.status(201).json({ message: "Password registered successfully" });
+		res.status(201).json({ message: "Contraseña registrada con éxito" });
 	} catch (error) {
-		res.status(500).json({ error: "Error registering password" });
+		res.status(500).json({ error: "Error al registrar la contraseña" });
 	}
 };
 
@@ -76,7 +84,7 @@ const removeCookie = (req, res) => {
 	const { id } = req.params;
 
 	res.clearCookie("token");
-	res.json({ message: "Cookie deleted" });
+	res.json({ message: "Cookie eliminada" });
 };
 
 router.post("/register", register);

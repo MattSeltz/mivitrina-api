@@ -6,7 +6,6 @@ export const postData = async (req, res) => {
 		await message.save();
 		res.json(message);
 	} catch (error) {
-		res.status(500).json({ message: error.message });
-		throw new Error(error);
+		res.status(500).json({ message: "Error al enviar el mensaje" });
 	}
 };

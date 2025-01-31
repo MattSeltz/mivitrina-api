@@ -7,8 +7,7 @@ export const getData = async (req, res) => {
 		const site = await Site.find().populate("user");
 		res.status(200).json(site);
 	} catch (error) {
-		res.status(500).json({ message: error.message });
-		throw new Error(error);
+		res.status(500).json({ message: "Error al obtener sitios" });
 	}
 };
 
@@ -17,8 +16,7 @@ export const getOneData = async (req, res) => {
 		const site = await Site.findById(req.params.id).populate("user");
 		res.status(200).json(site);
 	} catch (error) {
-		res.status(500).json({ message: error.message });
-		throw new Error(error);
+		res.status(500).json({ message: "Error al obtener el sitio" });
 	}
 };
 
@@ -28,8 +26,7 @@ export const postData = async (req, res) => {
 		await site.save();
 		res.status(201).json(site);
 	} catch (error) {
-		res.status(500).json({ message: error.message });
-		throw new Error(error);
+		res.status(500).json({ message: "Error al crear el sitio" });
 	}
 };
 
@@ -40,8 +37,7 @@ export const putData = async (req, res) => {
 		});
 		res.status(200).json(site);
 	} catch (error) {
-		res.status(500).json({ message: error.message });
-		throw new Error(error);
+		res.status(500).json({ message: "Error al actualizar el sitio" });
 	}
 };
 
@@ -50,8 +46,7 @@ export const deleteData = async (req, res) => {
 		await Site.findByIdAndDelete(req.params.id);
 		res.status(200).json({ message: "Data has been deleted" });
 	} catch (error) {
-		res.status(500).json({ message: error.message });
-		throw new Error(error);
+		res.status(500).json({ message: "Error al eliminar el sitio" });
 	}
 };
 
@@ -63,8 +58,7 @@ export const populateData = async (req, res) => {
 		await Site.findByIdAndUpdate(id, { user });
 		res.status(200).json({ message: "Data has been updated" });
 	} catch (error) {
-		res.status(500).json({ message: error.message });
-		throw new Error(error);
+		res.status(500).json({ message: "Error" });
 	}
 };
 
@@ -80,8 +74,7 @@ export const getOneDataByTitle = async (req, res) => {
 		);
 		res.json(site);
 	} catch (error) {
-		console.error(error.message);
-		res.status(500).send(error.message);
+		res.status(500).json({ error: "Error" });
 	}
 };
 
@@ -103,8 +96,7 @@ export const upload = async (req, res) => {
 		);
 		res.json(site);
 	} catch (error) {
-		console.error(error.message);
-		res.status(500).send(error.message);
+		res.status(500).json({ error: "Error" });
 	}
 };
 
@@ -118,43 +110,33 @@ export const uploadAndUpdate = async (req, res) => {
 			folder: "mivitrina",
 		});
 
-		// Mostrar la imagen que vamos a actualizar
-		console.log("Intentando actualizar photoId:", photoId);
 		const site = await Site.findOne({ _id: id, "galery.id": photoId });
 
 		if (!site) {
 			return res
 				.status(404)
-				.json({ message: "No se encontró el sitio o la foto." });
+				.json({ error: "No se encontró el sitio o la foto." });
 		}
 
-		// Verificamos los valores antes de la actualización
-		console.log("Sitio encontrado para actualizar:", site.galery);
-
-		// Realizamos la actualización
 		const updatedSite = await Site.findOneAndUpdate(
 			{ _id: id, "galery.id": photoId },
 			{
 				$set: {
-					"galery.$.uri": result.secure_url, // Actualizamos la URL
-					"galery.$.id": result.public_id, // Actualizamos el ID
+					"galery.$.uri": result.secure_url,
+					"galery.$.id": result.public_id,
 				},
 			},
 			{ new: true }
 		);
 
-		// Verificamos si el sitio se actualizó
 		if (!updatedSite) {
 			return res.status(404).json({
-				message: "No se pudo actualizar la foto en el sitio.",
+				error: "No se pudo actualizar la foto en el sitio.",
 			});
 		}
 
 		res.json({ message: "Imagen actualizada correctamente", updatedSite });
 	} catch (error) {
-		console.error("Error al actualizar la foto:", error.message);
-		res
-			.status(500)
-			.send({ message: "Error al actualizar la foto", error: error.message });
+		res.status(500).json({ error: "Error al actualizar la foto" });
 	}
 };
