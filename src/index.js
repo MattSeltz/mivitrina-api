@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import { db } from "./db/db.js";
 
 //ENV
-import { PORT } from "./configs/configs.js";
+import { PORT, CORS } from "./configs/configs.js";
 
 //ROUTES
 import userRoutes from "./routes/user.js";
@@ -25,8 +25,10 @@ const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(
 	cors({
-		origin: "http://localhost:5173",
+		origin: CORS,
 		credentials: true,
+		allowedHeaders: ["Content-Type", "Authorization", "Referer"],
+		methods: ["GET", "POST", "PUT", "DELETE"],
 	})
 );
 app.use(cookieParser());

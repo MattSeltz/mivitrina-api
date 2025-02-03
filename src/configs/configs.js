@@ -6,3 +6,4 @@ export const API_KEY = process.env.API_KEY;
 export const API_SECRET = process.env.API_SECRET;
 export const USER = process.env.USER;
 export const PASS = process.env.PASS;
+export const CORS = process.env.CORS;
